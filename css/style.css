@@ -164,8 +164,8 @@ html, body {
     transform: scale(0.95);
 }
 
-[data-theme="light"] .icon-moon { display: none; }
-[data-theme="dark"] .icon-sun { display: none; }
+[data-theme="light"] .icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
 
 /* ===== Messages Area ===== */
 
@@ -226,6 +226,25 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
+}
+
+.user-avatar-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 2px;
+}
+
+.user-avatar-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
 }
 
 .bubble {
@@ -258,10 +277,12 @@ html, body {
 
 .bot .message-time {
     text-align: left;
+    padding-left: 0;
 }
 
 .user .message-time {
     text-align: right;
+    padding-right: 0;
 }
 
 /* ===== Bubble content formatting ===== */

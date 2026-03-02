@@ -100,15 +100,21 @@ function addMessage(role, text) {
         messageDiv.innerHTML = `
             <img src="assets/logo.png" alt="Bot" class="message-avatar">
             <div class="message-content">
-                <div class="bubble">${renderMarkdown(text)}</div>
                 <span class="message-time">${time}</span>
+                <div class="bubble">${renderMarkdown(text)}</div>
             </div>`;
     } else {
         const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
         messageDiv.innerHTML = `
             <div class="message-content">
-                <div class="bubble">${escaped}</div>
                 <span class="message-time">${time}</span>
+                <div class="bubble">${escaped}</div>
+            </div>
+            <div class="user-avatar-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                </svg>
             </div>`;
     }
 
