@@ -1,7 +1,7 @@
 // =====================================================
 // CONFIGURATION — Replace with your Vercel backend URL
 // =====================================================
-const API_URL = "YOUR_VERCEL_BACKEND_URL/api/chat";
+const API_URL = "https://shs-chatbot-eta.vercel.app/api/chat";
 
 // ===== DOM Elements =====
 const chatMessages = document.getElementById("chatMessages");
