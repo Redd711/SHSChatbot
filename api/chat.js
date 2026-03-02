@@ -1,8 +1,5 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 
-// =====================================================
-// GEMINI API KEY — Set as environment variable in Vercel
-// =====================================================
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const SYSTEM_PROMPT = `You are the official chatbot of the University of Perpetual Help System Laguna (UPHSL) — Senior High School Department, located at the Jonelta Campus. Your name is "UPHSL SHS Chatbot."
@@ -147,29 +144,30 @@ module.exports = async function handler(req, res) {
 
         const recentMessages = messages.slice(-20);
 
-        const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash-preview-04-17",
-            systemInstruction: SYSTEM_PROMPT,
-        });
+        const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-        const history = recentMessages.slice(0, -1).map((m) => ({
+        const contents = recentMessages.map((m) => ({
             role: m.role === "user" ? "user" : "model",
             parts: [{ text: m.content }],
         }));
 
-        const chat = model.startChat({ history });
-        const lastMessage = recentMessages[recentMessages.length - 1].content;
-        const result = await chat.sendMessage(lastMessage);
-        const response = result.response.text();
+        const result = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: contents,
+            config: {
+                systemInstruction: SYSTEM_PROMPT,
+            },
+        });
 
-        return res.status(200).json({ response });
+        return res.status(200).json({ response: result.text });
     } catch (err) {
         console.error("Gemini API error:", err);
         const message =
-            err.message?.includes("API key") ? "Invalid API key." :
-            err.message?.includes("quota") ? "API quota exceeded. Please try again later." :
-            "Failed to generate a response. Please try again.";
+            err.message?.includes("API key") || err.message?.includes("API_KEY")
+                ? "Invalid API key."
+                : err.message?.includes("quota")
+                  ? "API quota exceeded. Please try again later."
+                  : "Failed to generate a response. Please try again.";
         return res.status(500).json({ error: message });
     }
 };
